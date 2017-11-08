@@ -6,7 +6,9 @@
 
 **Neuroevolution** is a type of genetic algorithm with the goal of finding solutions for difficult problems by progressively evolving a population of **neural networks**. The algorithm cycles by spawning a generation of specimens, applying a **fitness function** to each individual in order to determine the best-performing specimens, and finally seeding the next generation with the genes of those specimens. The genes may be optionally crossed and/or mutated to simulate natural reproductive processes.
 
-To make things visually appealing, the fitness function chosen for this simulation is one geared around teaching squirrels to gather the most acorns for winter! Inspiration taken from [David Eck](http://math.hws.edu/eck/jsdemo/jsGeneticAlgorithm.html)
+To make things visually appealing, the fitness function chosen for this simulation is one geared around teaching squirrels to gather the most acorns for winter!
+
+(Inspired by the work of [David Eck](http://math.hws.edu/eck/jsdemo/jsGeneticAlgorithm.html).)
 
 ## Functionality and MVP
 
