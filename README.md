@@ -134,6 +134,7 @@ In addition to the react `bundle.js` file, there will be a second `acorns-bundle
 **Day 4**: Add controls and polished styling. Goals:
 * Add controls for start/pause/reset, rendering speed, mutation rate, population size, cheek capacity, elitism (# of individuals surviving to next generation), and cheek capacity.
 * Add a running tally of useful statistics
+* Add a production README
 * If time: add save/load functionality.
 
 ## Bonus Features
