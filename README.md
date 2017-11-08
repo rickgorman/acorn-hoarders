@@ -10,7 +10,7 @@ To make things visually appealing, the fitness function chosen for this simulati
 
 ## Functionality and MVP
 
-The playing grid will consist of a 2d grid containing one or more trees dropping **acorns** and several **grassy spots** in which a squirrel might decide to bury its nuts.
+The playing grid will consist of a 2d grid containing one or more trees dropping `Acorns` and several `GrassySpot`s in which a squirrel might decide to bury its nuts.
 
 Users will be able to control aspects of the simulation:
 - [ ] Start, pause, and reset the simulation
