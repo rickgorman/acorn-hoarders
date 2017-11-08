@@ -4,7 +4,7 @@
 
 ## Background
 
-**Neuroevolution** is a type of genetic algorithm with the goal of finding solutions for difficult problems by progressively evolving a population of **neural networks**. The algorithm cycles by spawning a generation of individuals, applying a fitness function to each individual in order to determine the best-performing specimens, and finally seeding the next generation with the genes of those specimens. The genes may be optionally crossed and/or mutated to simulate natural reproductive processes.
+**Neuroevolution** is a type of genetic algorithm with the goal of finding solutions for difficult problems by progressively evolving a population of **neural networks**. The algorithm cycles by spawning a generation of specimens, applying a **fitness function** to each individual in order to determine the best-performing specimens, and finally seeding the next generation with the genes of those specimens. The genes may be optionally crossed and/or mutated to simulate natural reproductive processes.
 
 To make things visually appealing, the fitness function chosen for this simulation is one geared around teaching squirrels to gather the most acorns for winter!
 
@@ -23,10 +23,6 @@ Users will be able to control aspects of the simulation:
 In addition, this project will include:
 - [ ] A help sidebar that explains details about the simulation
 - [ ] A production README
-
-## Wireframe
-
-<img src="https://raw.githubusercontent.com/rickgorman/acorn-hoarders/master/media/acorn-hoarders-wireframe.png">
 
 
 ## Architecture and Technologies
@@ -61,6 +57,12 @@ In addition to the react `bundle.js` file, there will be a second `acorns-bundle
     * Neural net contains 16 bits of memory that may be set by the squirrel at whim. Each acts as an input node into the neural net.
   * Contains sensors for observing the environment
   * Contains actions `[move, wait, grabAcorn, addMemory, ...]`
+
+
+## Dependencies
+
+* [Neataptic](https://wagenaartje.github.io/neataptic) or [Genetic.js](https://github.com/subprotocol/genetic-js/) as a neuroevolution helper, choice dependent on speed
+
 
 ## Schema
 
@@ -97,6 +99,10 @@ In addition to the react `bundle.js` file, there will be a second `acorns-bundle
 #### Frontend Routes
 * `/` - show simulation
 
+## Wireframe
+
+<img src="https://raw.githubusercontent.com/rickgorman/acorn-hoarders/master/media/acorn-hoarders-wireframe.png">
+
 ## React Component Hierarchy
 
 * `Main`
@@ -106,16 +112,12 @@ In addition to the react `bundle.js` file, there will be a second `acorns-bundle
   * `LoadAnnounce` - Confirms to the user that selecting a `load state` had an effect
   * `Statistics` - Shows interesting facts about the current/past generations
 
-## Dependencies
-
-* [Neataptic](https://wagenaartje.github.io/neataptic) or [Genetic.js](https://github.com/subprotocol/genetic-js/) as a neuroevolution helper, choice dependent on speed
-
 
 ## Implementation Timeline
 
 **Day 1**: Setup and 2d game engine logic. Goals:
-* Configure and test all necessary node modules.
 * Get webpack working
+* Configure and test all necessary node modules.
 * Write React entry file with `Simulation` component
 * Add HTML and basic CSS
 * Implement `game.js`, `board.js` and `cell.js` to the point where a 2d array of cells can be painted onto the html canvas.
