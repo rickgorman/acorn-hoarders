@@ -1,4 +1,4 @@
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Purushottam_soni_creative_photography_%281%29.jpg/1024px-Purushottam_soni_creative_photography_%281%29.jpg">
+<p align="center"><img src="https://raw.githubusercontent.com/rickgorman/acorn-hoarders/master/media/squirrel-with-nuts.jpg" width="500"></p>
 
 # JS Project Proposal: Neuroevolution of Acorn Hoarding
 
@@ -25,6 +25,8 @@ In addition, this project will include:
 - [ ] A production README
 
 ## Wireframe
+
+<img src="https://raw.githubusercontent.com/rickgorman/acorn-hoarders/master/media/acorn-hoarders-wireframe.png">
 
 
 ## Architecture and Technologies
