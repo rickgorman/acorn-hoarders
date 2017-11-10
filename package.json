@@ -1,0 +1,21 @@
+{
+  "name": "acorn-hoarders",
+  "private": true,
+  "engines": {
+    "npm": "3.10.10",
+    "node": "6.10.1"
+  },
+  "scripts": {
+    "postinstall": "webpack",
+    "webpack": "webpack --watch"
+  },
+  "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "lodash": "^4.17.4",
+    "source-map": "^0.6.1",
+    "webpack": "^3.8.1"
+  }
+}
