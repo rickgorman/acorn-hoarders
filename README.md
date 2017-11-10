@@ -37,7 +37,7 @@ This project will be implemented with the following technologies:
 * `webpack` to bundle js files
 
 In addition to the react `bundle.js` file, there will be a second `acorns-bundle.js` containing the simulation logic. The logic will be broken down into several files:
-* `game.js`
+* `sim.js`
   * Handles each `tick` of the simulation
   * Handles configuration options
   * Handle statistics
@@ -122,7 +122,7 @@ In addition to the react `bundle.js` file, there will be a second `acorns-bundle
 * Configure and test all necessary node modules.
 * Write React entry file with `Simulation` component
 * Add HTML and basic CSS
-* Implement `game.js`, `board.js` and `cell.js` to the point where a 2d array of cells can be painted onto the html canvas.
+* Implement `sim.js`, `board.js` and `cell.js` to the point where a 2d array of cells can be painted onto the html canvas.
 
 **Day 2**: Sensing, Actions and neural nets. Goals:
 * Get the `Game` object to handle a `tick()`
