@@ -21,8 +21,8 @@
 .byebug_history
 
 # Ignore bundle
-bundle*.js
-bundle*.js.map
+bundle-sim.js
+bundle-sim.js.map
 
 # Ignore npm
 npm-debug.log

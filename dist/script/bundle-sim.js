@@ -85,6 +85,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+// speed constants
+var FRAME_RATE = 60;
+
+// board constants
 var BOARD_WIDTH = exports.BOARD_WIDTH = 800;
 var GRID_SIZE = exports.GRID_SIZE = 40;
 
@@ -103,6 +107,8 @@ var Sim = function () {
     this.ctx = this.canvas.getContext('2d');
 
     this.board = new _board2.default(this.ctx);
+
+    this.tickHandle = null;
   }
 
   _createClass(Sim, [{
@@ -116,6 +122,8 @@ var Sim = function () {
     value: function tick() {
       this.board.tick();
       this.board.render();
+      this.tickHandle = requestAnimationFrame(this.tick);
+      // this.tickHandle = setTimeout(this.tick, 1000/FRAME_RATE);
     }
   }]);
 
@@ -194,7 +202,6 @@ var Board = function () {
   }, {
     key: 'forEach',
     value: function forEach(callback) {
-      console.log('foreach');
       var row = void 0,
           col = void 0;
       for (row = 0; row < _sim.GRID_SIZE; row++) {
@@ -205,13 +212,10 @@ var Board = function () {
     }
   }, {
     key: 'tick',
-    value: function tick() {
-      console.log('board tick()');
-    }
+    value: function tick() {}
   }, {
     key: 'render',
     value: function render() {
-      console.log('board render()');
       // clear entire board
       this.ctx.clearRect(0, 0, _sim.BOARD_WIDTH, _sim.BOARD_WIDTH);
 
@@ -266,11 +270,12 @@ var Cell = function () {
 
   _createClass(Cell, [{
     key: 'tick',
-    value: function tick() {}
+    value: function tick() {
+      this.occupant.tick();
+    }
   }, {
     key: 'render',
     value: function render() {
-      // console.log('cell render() ' + this.xoffset + '/' + this.yoffset);
       this.ctx.fillStyle = this.occupant.color;
 
       this.ctx.fillRect(this.xoffset + _board.CELL_PADDING, this.yoffset + _board.CELL_PADDING, _board.SPRITE_WIDTH, _board.SPRITE_WIDTH);
@@ -293,13 +298,26 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var NullOccupant = function NullOccupant(cell) {
-  _classCallCheck(this, NullOccupant);
+var NullOccupant = function () {
+  function NullOccupant(cell) {
+    _classCallCheck(this, NullOccupant);
 
-  this.color = "#e0e0e0";
-};
+    this.color = "#e0e0e0";
+  }
+
+  _createClass(NullOccupant, [{
+    key: "tick",
+    value: function tick() {
+      // intentionally left blank
+    }
+  }]);
+
+  return NullOccupant;
+}();
 
 exports.default = NullOccupant;
 
