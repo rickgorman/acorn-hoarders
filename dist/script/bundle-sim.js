@@ -70,6 +70,11 @@
 "use strict";
 
 
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.GRID_SIZE = exports.BOARD_WIDTH = undefined;
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _board = __webpack_require__(1);
@@ -79,6 +84,9 @@ var _board2 = _interopRequireDefault(_board);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var BOARD_WIDTH = exports.BOARD_WIDTH = 800;
+var GRID_SIZE = exports.GRID_SIZE = 40;
 
 var Sim = function () {
   function Sim() {
@@ -90,8 +98,8 @@ var Sim = function () {
 
     // set up a drawing context
     this.canvas = document.getElementById('canvas');
-    this.canvas.width = _board.BOARD_WIDTH;
-    this.canvas.height = _board.BOARD_WIDTH;
+    this.canvas.width = BOARD_WIDTH;
+    this.canvas.height = BOARD_WIDTH;
     this.ctx = this.canvas.getContext('2d');
 
     this.board = new _board2.default(this.ctx);
@@ -130,7 +138,7 @@ sim.run();
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.CELL_PADDING = exports.SPRITE_WIDTH = exports.CELL_WIDTH = exports.BOARD_WIDTH = undefined;
+exports.CELL_PADDING = exports.SPRITE_WIDTH = exports.CELL_WIDTH = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -138,13 +146,14 @@ var _cell = __webpack_require__(2);
 
 var _cell2 = _interopRequireDefault(_cell);
 
+var _sim = __webpack_require__(0);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var BOARD_WIDTH = exports.BOARD_WIDTH = 800;
 var CELL_WIDTH = exports.CELL_WIDTH = 20;
-var SPRITE_WIDTH = exports.SPRITE_WIDTH = 14;
+var SPRITE_WIDTH = exports.SPRITE_WIDTH = 18;
 var CELL_PADDING = exports.CELL_PADDING = (CELL_WIDTH - SPRITE_WIDTH) / 2;
 
 var Board = function () {
@@ -166,16 +175,17 @@ var Board = function () {
   _createClass(Board, [{
     key: 'setup',
     value: function setup() {
-      // set up a 40x40 array of Cells
+      // set up an array of Cells
       this.grid = [];
-      this.width = CELL_WIDTH;
       var row = void 0;
       var col = void 0;
-      for (row = 0; row < this.width; row++) {
+      for (row = 0; row < _sim.GRID_SIZE; row++) {
         this.grid.push([]);
-        for (col = 0; col < this.width; col++) {
-          var xOffset = col * this.width;
-          var yOffset = row * this.width;
+
+        var yOffset = row * CELL_WIDTH;
+
+        for (col = 0; col < _sim.GRID_SIZE; col++) {
+          var xOffset = col * CELL_WIDTH;
           var cell = new _cell2.default(this.ctx, xOffset, yOffset);
           this.grid[row].push(cell);
         }
@@ -187,8 +197,8 @@ var Board = function () {
       console.log('foreach');
       var row = void 0,
           col = void 0;
-      for (row = 0; row < this.width; row++) {
-        for (col = 0; col < this.width; col++) {
+      for (row = 0; row < _sim.GRID_SIZE; row++) {
+        for (col = 0; col < _sim.GRID_SIZE; col++) {
           callback(this.grid[row][col]);
         }
       }
@@ -203,7 +213,7 @@ var Board = function () {
     value: function render() {
       console.log('board render()');
       // clear entire board
-      this.ctx.clearRect(0, 0, BOARD_WIDTH, BOARD_WIDTH);
+      this.ctx.clearRect(0, 0, _sim.BOARD_WIDTH, _sim.BOARD_WIDTH);
 
       // tick each cell
 
@@ -258,7 +268,7 @@ var Cell = function () {
   }, {
     key: 'render',
     value: function render() {
-      console.log('cell render()');
+      // console.log('cell render() ' + this.xoffset + '/' + this.yoffset);
       this.occupant.render();
     }
   }]);
@@ -295,11 +305,11 @@ var NullOccupant = function () {
   }
 
   _createClass(NullOccupant, [{
-    key: 'render',
+    key: "render",
     value: function render() {
-      console.log('null occupant render()');
-      this.cell.ctx.fillStyle = "#ff3333";
-      this.cell.ctx.fillRect(this.cell.xoffset + _board.CELL_PADDING, this.cell.yoffset + _board.CELL_PADDING, this.cell.xoffset + _board.CELL_PADDING + _board.SPRITE_WIDTH, this.cell.yoffset + _board.CELL_PADDING + _board.SPRITE_WIDTH);
+      this.cell.ctx.fillStyle = "#e0e0e0";
+
+      this.cell.ctx.fillRect(this.cell.xoffset + _board.CELL_PADDING, this.cell.yoffset + _board.CELL_PADDING, _board.SPRITE_WIDTH, _board.SPRITE_WIDTH);
     }
   }]);
 
