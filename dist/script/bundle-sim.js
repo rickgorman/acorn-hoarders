@@ -246,6 +246,8 @@ var _null_occupant = __webpack_require__(3);
 
 var _null_occupant2 = _interopRequireDefault(_null_occupant);
 
+var _board = __webpack_require__(1);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -269,7 +271,9 @@ var Cell = function () {
     key: 'render',
     value: function render() {
       // console.log('cell render() ' + this.xoffset + '/' + this.yoffset);
-      this.occupant.render();
+      this.ctx.fillStyle = this.occupant.color;
+
+      this.ctx.fillRect(this.xoffset + _board.CELL_PADDING, this.yoffset + _board.CELL_PADDING, _board.SPRITE_WIDTH, _board.SPRITE_WIDTH);
     }
   }]);
 
@@ -289,32 +293,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _board = __webpack_require__(1);
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var NullOccupant = function () {
-  function NullOccupant(cell) {
-    _classCallCheck(this, NullOccupant);
+var NullOccupant = function NullOccupant(cell) {
+  _classCallCheck(this, NullOccupant);
 
-    this.render = this.render.bind(this);
-
-    this.cell = cell;
-  }
-
-  _createClass(NullOccupant, [{
-    key: "render",
-    value: function render() {
-      this.cell.ctx.fillStyle = "#e0e0e0";
-
-      this.cell.ctx.fillRect(this.cell.xoffset + _board.CELL_PADDING, this.cell.yoffset + _board.CELL_PADDING, _board.SPRITE_WIDTH, _board.SPRITE_WIDTH);
-    }
-  }]);
-
-  return NullOccupant;
-}();
+  this.color = "#e0e0e0";
+};
 
 exports.default = NullOccupant;
 
