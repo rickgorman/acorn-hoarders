@@ -287,6 +287,7 @@ var Board = function () {
     this.ctx = generationRunner.ctx;
 
     this.squirrelBrains = squirrelBrains;
+    this.squirrels = [];
 
     this.setupBoard();
   }
@@ -295,8 +296,8 @@ var Board = function () {
     key: 'setupBoard',
     value: function setupBoard() {
       this.spawnEmptyCells();
-      this.spawnAcornPiles(4);
-      this.spawnGrassyPatches(4);
+      this.spawnAcornPiles(5);
+      this.spawnGrassyPatches(20);
       this.spawnSquirrels();
     }
   }, {
@@ -345,44 +346,90 @@ var Board = function () {
       });
     }
   }, {
-    key: 'randomEmptyLocationNearBottom',
-    value: function randomEmptyLocationNearBottom() {
-      var x = 0,
-          y = _sim.GRID_SIZE - 1;
+    key: '_randomEmptyLocationBetween',
+    value: function _randomEmptyLocationBetween(topLeftPos, botRightPos, topLeftExcludePos, botRightExcludePos) {
+      var _topLeftPos = _slicedToArray(topLeftPos, 2),
+          topLeftY = _topLeftPos[0],
+          topLeftX = _topLeftPos[1];
 
-      while (!this.grid[y][x].isEmpty()) {
-        x = Math.floor(Math.random() * _sim.GRID_SIZE);
-        y = _sim.GRID_SIZE - 5 + Math.floor(Math.random() * 5);
-      }
+      var _botRightPos = _slicedToArray(botRightPos, 2),
+          botRightY = _botRightPos[0],
+          botRightX = _botRightPos[1];
+
+      var inExclusionZone = void 0;
+      var x = void 0,
+          y = void 0;
+      do {
+        x = Math.floor(topLeftX + Math.floor(Math.random() * (botRightX - topLeftX)));
+        y = Math.floor(topLeftY + Math.floor(Math.random() * (botRightY - topLeftY)));
+
+        // if given, exclude cells within the excluded region
+        inExclusionZone = false;
+        if (topLeftExcludePos && botRightExcludePos) {
+          if (this._isInsideBox([x, y], topLeftExcludePos, botRightExcludePos)) {
+            inExclusionZone = true;
+          }
+        }
+      } while (!this.grid[y][x].isEmpty() || inExclusionZone);
+
       return [x, y];
+    }
+  }, {
+    key: '_isInsideBox',
+    value: function _isInsideBox(xyCoords, topLeftPos, botRightPos) {
+      var _xyCoords = _slicedToArray(xyCoords, 2),
+          y = _xyCoords[0],
+          x = _xyCoords[1];
+
+      var _topLeftPos2 = _slicedToArray(topLeftPos, 2),
+          topLeftY = _topLeftPos2[0],
+          topLeftX = _topLeftPos2[1];
+
+      var _botRightPos2 = _slicedToArray(botRightPos, 2),
+          botRightY = _botRightPos2[0],
+          botRightX = _botRightPos2[1];
+
+      if (y >= Math.floor(topLeftY) && y <= Math.floor(botRightY) && x >= Math.floor(topLeftX) && x <= Math.floor(botRightX)) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }, {
     key: 'randomEmptyLocationNearTop',
     value: function randomEmptyLocationNearTop() {
-      var x = 0,
-          y = 0;
-
-      while (!this.grid[y][x].isEmpty()) {
-        x = Math.floor(Math.random() * _sim.GRID_SIZE);
-        y = Math.floor(Math.random() * 5);
-      }
-      return [x, y];
+      return this._randomEmptyLocationBetween([0, 0], [4, _sim.GRID_SIZE]);
+    }
+  }, {
+    key: 'randomEmptyLocationNearBottom',
+    value: function randomEmptyLocationNearBottom() {
+      return this._randomEmptyLocationBetween([_sim.GRID_SIZE - 4, 0], [_sim.GRID_SIZE, _sim.GRID_SIZE]);
+    }
+  }, {
+    key: 'randomEmptyLocationNearCenter',
+    value: function randomEmptyLocationNearCenter() {
+      return this._randomEmptyLocationBetween([_sim.GRID_SIZE / 3, _sim.GRID_SIZE / 3], [_sim.GRID_SIZE / 3 * 2, _sim.GRID_SIZE / 3 * 2]);
+    }
+  }, {
+    key: 'randomEmptyLocationBorderingCenter',
+    value: function randomEmptyLocationBorderingCenter() {
+      return this._randomEmptyLocationBetween([0, 0], [_sim.GRID_SIZE, _sim.GRID_SIZE], [_sim.GRID_SIZE / 3, _sim.GRID_SIZE / 3], [_sim.GRID_SIZE / 3 * 2, _sim.GRID_SIZE / 3 * 2]);
     }
   }, {
     key: '_spawnOccupant',
     value: function _spawnOccupant(klass, xyCoords) {
-      var _xyCoords = _slicedToArray(xyCoords, 2),
-          x = _xyCoords[0],
-          y = _xyCoords[1];
+      var _xyCoords2 = _slicedToArray(xyCoords, 2),
+          x = _xyCoords2[0],
+          y = _xyCoords2[1];
 
       for (var _len = arguments.length, rest = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
         rest[_key - 2] = arguments[_key];
       }
 
-      var instance = new (Function.prototype.bind.apply(klass, [null].concat([this.grid[x][y]], rest)))();
-      this.grid[y][x].receiveVisitor(instance);
+      var occupant = new (Function.prototype.bind.apply(klass, [null].concat([this.grid[x][y]], rest)))();
+      this.grid[y][x].receiveVisitor(occupant);
 
-      return instance;
+      return occupant;
     }
   }, {
     key: 'spawnSquirrel',
@@ -402,8 +449,10 @@ var Board = function () {
   }, {
     key: 'spawnSquirrels',
     value: function spawnSquirrels() {
+      var squirrel = void 0;
       for (var i = 0; i < this.squirrelBrains.length; i++) {
-        this.spawnSquirrel(this.randomEmptyLocationNearBottom(), this.squirrelBrains[i]);
+        squirrel = this.spawnSquirrel(this.randomEmptyLocationBorderingCenter(), this.squirrelBrains[i]);
+        this.squirrels.push(squirrel);
       }
     }
   }, {
@@ -412,17 +461,15 @@ var Board = function () {
       var x = void 0,
           y = void 0;
       for (var i = 0; i < quantity; i++) {
-        var xyCoords = this.randomEmptyLocationNearTop();
+        var xyCoords = this.randomEmptyLocationNearCenter();
         this.spawnAcornPile(xyCoords);
       }
     }
   }, {
     key: 'spawnGrassyPatches',
     value: function spawnGrassyPatches(quantity) {
-      for (var i = 0; i < quantity / 2; i++) {
-        var xyCoords = this.randomEmptyLocationNearTop();
-        this.spawnGrassyPatch(xyCoords);
-        xyCoords = this.randomEmptyLocationNearBottom();
+      for (var i = 0; i < quantity; i++) {
+        var xyCoords = this.randomEmptyLocationBorderingCenter();
         this.spawnGrassyPatch(xyCoords);
       }
     }
@@ -482,18 +529,6 @@ var Board = function () {
         return this.grid[y][x].occupant.getType();
       }
     }
-  }, {
-    key: 'getSquirrels',
-    value: function getSquirrels() {
-      var squirrels = [];
-      this.forEach(function (cell) {
-        if (cell.occupant.getType() === _squirrel3.OCCUPANT_TYPE_SQUIRREL) {
-          squirrels.push(cell.occupant);
-        }
-      });
-
-      return squirrels;
-    }
   }]);
 
   return Board;
@@ -545,6 +580,7 @@ var GenerationRunner = function () {
     // toggle for rendering (vs running silently/faster)
     this.showRendering = true;
     this.frameRate = _sim.FRAME_RATE;
+    this.framesPerGeneration = FRAMES_PER_GENERATION;
 
     this.setHotKeys();
   }
@@ -587,7 +623,7 @@ var GenerationRunner = function () {
       }
       var avgScore = Math.round(sumScores / this.neat.population.length);
       console.log('Gen: ' + this.currentGeneration + ' Best: ' + this.neat.population[0].score.toFixed(2) + ' Average: ' + avgScore);
-      var memories = this.board.getSquirrels().map(function (squirrel) {
+      var memories = this.board.squirrels.map(function (squirrel) {
         return squirrel.memory;
       });
       // console.log(memories);
@@ -630,7 +666,7 @@ var GenerationRunner = function () {
 
       // end after set number of frames
       this.framesElapsed += 1;
-      if (this.framesElapsed >= FRAMES_PER_GENERATION) {
+      if (this.framesElapsed >= this.framesPerGeneration) {
         this.endGeneration();
       } else {
         if (this.showRendering) {
@@ -869,9 +905,9 @@ var Squirrel = function (_Occupant) {
       this.updateColor();
 
       if (this.brain.score < 1) {
-        this.renderText = this.brain.score;
+        this.renderText = this.brain.score.toFixed(2);
       } else {
-        this.renderText = Math.floor(this.brain.score);
+        this.renderText = Math.floor(this.brain.score).toFixed(0);
       }
     }
 
@@ -937,14 +973,17 @@ var Squirrel = function (_Occupant) {
   }, {
     key: 'getNextMove',
     value: function getNextMove(signal) {
-      if (signal <= 0.25) {
+      var alteredSignal = Math.cos(signal);
+      if (alteredSignal <= -0.6) {
+        return [-1, 0];
+      } else if (alteredSignal > -0.6 && alteredSignal <= -0.2) {
         return [0, -1];
-      } else if (signal < 0.50) {
+      } else if (alteredSignal > -0.2 && alteredSignal <= 0.2) {
         return [1, 0];
-      } else if (signal >= 0.50 && signal <= 0.75) {
+      } else if (alteredSignal > 0.2 && alteredSignal <= 0.6) {
         return [0, 1];
       } else {
-        return [-1, 0];
+        return [0, 0];
       }
     }
   }, {
@@ -982,7 +1021,11 @@ var Squirrel = function (_Occupant) {
   }, {
     key: 'move',
     value: function move(xyDelta) {
-      this.cell.moveOccupant(xyDelta);
+      if (xyDelta === [0, 0]) {
+        return;
+      } else {
+        this.cell.moveOccupant(xyDelta);
+      }
     }
   }, {
     key: 'changeCell',
@@ -1081,7 +1124,7 @@ var Cell = function () {
       this._ctx.font = "11px bold Arial";
       this._ctx.textAlign = "center";
       this._ctx.textBaseline = "hanging";
-      this._ctx.fillText(this.occupant.renderText, xPos + _board.CELL_WIDTH / 2, yPos + 3);
+      this._ctx.fillText(this.occupant.renderText, xPos + _board.CELL_WIDTH / 2, yPos + _board.CELL_WIDTH * 0.8 / 2);
     }
   }, {
     key: 'isEmpty',
