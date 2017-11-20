@@ -166,7 +166,7 @@ var FRAME_RATE = exports.FRAME_RATE = 30;
 var MAX_GENERATIONS = exports.MAX_GENERATIONS = 100000;
 
 // board constants
-var GRID_SIZE = exports.GRID_SIZE = 20;
+var GRID_SIZE = exports.GRID_SIZE = 16;
 var BOARD_WIDTH = exports.BOARD_WIDTH = GRID_SIZE * _board.CELL_WIDTH;
 
 // neat constants
@@ -909,6 +909,8 @@ var Squirrel = function (_Occupant) {
       } else {
         this.renderText = Math.floor(this.brain.score).toFixed(0);
       }
+
+      this.renderText = "🐿️";
     }
 
     // return an array of values normalized between 0 and 1
@@ -1443,6 +1445,7 @@ var AcornPile = function (_Occupant) {
     var _this = _possibleConstructorReturn(this, (AcornPile.__proto__ || Object.getPrototypeOf(AcornPile)).call(this, cell));
 
     _this.color = "#965015";
+    _this.renderText = "🌰🌰";
     return _this;
   }
 
@@ -1500,6 +1503,7 @@ var GrassyPatch = function (_Occupant) {
     var _this = _possibleConstructorReturn(this, (GrassyPatch.__proto__ || Object.getPrototypeOf(GrassyPatch)).call(this, cell));
 
     _this.color = "#68ba39";
+    _this.renderText = "🍃🍃";
     return _this;
   }
 
