@@ -166,7 +166,7 @@ var FRAME_RATE = exports.FRAME_RATE = 30;
 var MAX_GENERATIONS = exports.MAX_GENERATIONS = 100000;
 
 // board constants
-var GRID_SIZE = exports.GRID_SIZE = 16;
+var GRID_SIZE = exports.GRID_SIZE = 20;
 var BOARD_WIDTH = exports.BOARD_WIDTH = GRID_SIZE * _board.CELL_WIDTH;
 
 // neat constants
@@ -270,7 +270,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var CELL_WIDTH = exports.CELL_WIDTH = 30;
+var CELL_WIDTH = exports.CELL_WIDTH = 40;
 var SPRITE_WIDTH = exports.SPRITE_WIDTH = CELL_WIDTH - 2;
 var CELL_PADDING = exports.CELL_PADDING = (CELL_WIDTH - SPRITE_WIDTH) / 2;
 
@@ -451,27 +451,53 @@ var Board = function () {
     value: function spawnSquirrels() {
       var squirrel = void 0;
       for (var i = 0; i < this.squirrelBrains.length; i++) {
-        squirrel = this.spawnSquirrel(this.randomEmptyLocationBorderingCenter(), this.squirrelBrains[i]);
+        squirrel = this.spawnSquirrel(this.randomEmptyLocationNearBottom(), this.squirrelBrains[i]);
         this.squirrels.push(squirrel);
       }
     }
   }, {
     key: 'spawnAcornPiles',
     value: function spawnAcornPiles(quantity) {
-      var x = void 0,
-          y = void 0;
-      for (var i = 0; i < quantity; i++) {
-        var xyCoords = this.randomEmptyLocationNearCenter();
-        this.spawnAcornPile(xyCoords);
-      }
+      // let x, y;
+      // for(let i = 0; i < quantity; i++) {
+      //   let xyCoords = this.randomEmptyLocationNearCenter();
+      //   this.spawnAcornPile(xyCoords);
+      // }
+
+      this.spawnAcornPile([9, 9]);
+      this.spawnAcornPile([10, 9]);
+      this.spawnAcornPile([10, 10]);
+      this.spawnAcornPile([9, 10]);
+      this.spawnAcornPile([9, 11]);
+      this.spawnAcornPile([10, 11]);
     }
   }, {
     key: 'spawnGrassyPatches',
     value: function spawnGrassyPatches(quantity) {
-      for (var i = 0; i < quantity; i++) {
-        var xyCoords = this.randomEmptyLocationBorderingCenter();
-        this.spawnGrassyPatch(xyCoords);
-      }
+      // for(let i=0; i<quantity; i++) {
+      //   let xyCoords = this.randomEmptyLocationBorderingCenter();
+      //   this.spawnGrassyPatch(xyCoords);
+      // }
+
+      this.spawnGrassyPatch([2, 2]);
+      this.spawnGrassyPatch([2, 3]);
+      this.spawnGrassyPatch([3, 2]);
+      this.spawnGrassyPatch([3, 3]);
+
+      this.spawnGrassyPatch([15, 2]);
+      this.spawnGrassyPatch([15, 3]);
+      this.spawnGrassyPatch([16, 2]);
+      this.spawnGrassyPatch([16, 3]);
+
+      this.spawnGrassyPatch([2, 17]);
+      this.spawnGrassyPatch([2, 18]);
+      this.spawnGrassyPatch([3, 17]);
+      this.spawnGrassyPatch([3, 18]);
+
+      this.spawnGrassyPatch([15, 15]);
+      this.spawnGrassyPatch([15, 16]);
+      this.spawnGrassyPatch([16, 15]);
+      this.spawnGrassyPatch([16, 16]);
     }
   }, {
     key: 'isOutOfBounds',
